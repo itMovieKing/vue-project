@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>left</title>
+		<style type="text/css">
+			.test{
+				width:100px;
+				height: 100px;
+				background-color: #FF0000;
+				transition:width 2s;
+			}
+			.test:hover{
+				width:300px;
+			}
+		</style>
+	</head>
+	<body>
+		<iframe id="right" name="right" src="http://127.0.0.1:8848/myvue/vuetest/html/right.html"></iframe>
+		<input type="text" id="test" />
+		<button id="send">send</button>
+		<div>
+			<p id="help">Helpful notes will appear here</p>
+			<p>E-mail: <input type="text" id="email" name="email"></p>
+			<p>Name: <input type="text" id="name" name="name"></p>
+			<p>Age: <input type="text" id="age" name="age"></p>
+		</div>
+		<div>
+			<p class="test">
+				hello
+			</p>
+		</div>
+	</body>
+	<script type="text/javascript">
+		window.onload = function() {
+			var ifa = document.getElementById("right").contentWindow;
+			var btn = document.getElementById("send");
+			btn.onclick = function() {
+				var value = document.getElementById("test").value;
+				ifa.postMessage(value, "http://127.0.0.1:8848/myvue/vuetest/html/right.html");
+				console.log("test");
+				console.log(event);
+
+			}
+		}
+
+		function showHelp(help) {
+			document.getElementById('help').innerHTML = help;
+		}
+
+		function setupHelp() {
+			var helpText = [{
+					'id': 'email',
+					'help': 'Your e-mail address'
+				},
+				{
+					'id': 'name',
+					'help': 'Your full name'
+				},
+				{
+					'id': 'age',
+					'help': 'Your age (you must be over 16)'
+				}
+			];
+
+			// for (var i = 0; i < helpText.length; i++) {
+			// 
+			// 	let item = helpText[i];
+			// 	document.getElementById(item.id).onfocus = function(){
+			// 		showHelp(item.help)
+			// 	}
+			// 	//这个时候由于所有的onfocus享用同一个语法环境,所有item.help会被覆盖
+			// 	//使用闭包或者let解决
+			// }
+			for(var i=0;i<helpText.length;i++){
+				(function(){
+					var item = helpText[i];
+						document.getElementById(item.id).onfocus = function(){
+							showHelp(item.help)
+						}
+				})();
+			}
+		}
+
+		setupHelp();
+	</script>
+</html>

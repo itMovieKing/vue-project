@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>rigth</title>
+	</head>
+	<body>
+		<p>i am right</p>
+		<p id="test"></p>
+	</body>
+	<script type="text/javascript">
+		
+		function hander(event){
+			event = event || window.event;
+			if(event.origin==="http://127.0.0.1:8848"){
+				var p=document.getElementById("test");
+				p.innerHTML=event.data;
+			
+			}
+			console.log(event)
+		}
+		if(window.addEventListener){
+			window.addEventListener("message",hander,false)
+		}else{
+			window.attachEvent("onmessage",hander)
+		}
+		
+	</script>
+</html>

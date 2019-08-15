@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="shortcut icon" type="image/x-icon" href="../img/logo.png"/>
+	</head>
+	<body>
+		<div id="components-demo">
+			<button-counter></button-counter>
+			<button-counter></button-counter>
+			<button-counter></button-counter>
+		</div>
+		<div id="blog-demo">
+			<!-- <blog-post title="hi"></blog-post>
+			<blog-post title="hello"></blog-post> -->
+			<div :style='{fontSize:postFontSize+"em"}'>
+				<blog-post v-for="post in posts" 
+				           v-bind:key="post.id" 
+						   v-bind:post="post"
+						   @enlarge-text="postFontSize+=$event"
+						   >
+					
+				</blog-post>
+			</div>
+			
+		</div>
+		<div id="navigation-link">
+			<navigation-link>
+				hello
+				<span>is me</span>
+				<button-counter></button-counter>
+				</navigation-link>
+		</div>
+	</body>
+	<script src="../js/vue.js"></script>
+	<script type="text/javascript">
+		Vue.component('button-counter',{																				
+			data:function(){
+				return {
+					count:0
+				}
+			},
+			template:'<button v-on:click="count++">you click me {{count}} times </button>'
+		})
+		new Vue({el:'#components-demo'})
+	</script>
+	<script type="text/javascript">
+		Vue.component('blog-post',{
+			props:['post'],
+			methods:{
+				change:function(res){
+					console.log(res)
+				}
+			},
+			template:`
+			<div>
+				<h3>{{post.title}}</h3>
+				<button @click="$emit('enlarge-text',0.1)">Enlarge text</button>
+				<p>{{post.content}}</p>
+			</div>
+			`
+		})
+		new Vue({
+			el:'#blog-demo',
+			data:{
+				posts:[
+					{
+						id:1,
+						title:'hi',
+						content:'this is the first one'
+					},
+					{
+						id:2,
+						title:'hello',
+						content:'this is the second one'
+					}
+				],
+				postFontSize:1
+			}
+			})
+	</script>
+	<script type="text/javascript">
+		Vue.component('navigation-link',{
+			template:`
+			<p>
+			<slot></slot>
+			</p>
+			`
+		})
+		new Vue({
+			el:'#navigation-link'
+		})
+	</script>
+</html>
